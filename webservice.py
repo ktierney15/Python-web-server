@@ -1,5 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import time
+import sys
+from sys import argv
 
 
 hostName = "localhost"
@@ -17,6 +19,16 @@ class MyServer(BaseHTTPRequestHandler):
         self.wfile.write(bytes("<body>", "utf-8"))
         self.wfile.write(bytes("<p>This is an example web server.</p>", "utf-8"))
         self.wfile.write(bytes("</body></html>", "utf-8"))
+
+    def do_POST(self):
+
+        content_length = int(self.headers.get('content-length', 0))
+        body = self.rfile.read(content_length)
+
+        self.wfile.write(body)
+        # self.wfile.write(self.headers)
+        sys.stdout.write(body.decode("utf-8"))
+        # sys.stdout.write(self.headers)
 
 
 if __name__ == "__main__":        
